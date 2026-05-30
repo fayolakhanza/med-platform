@@ -2,7 +2,7 @@
 import { Controller, Post, Get, Body, Param, UseGuards, Req } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { AuthGuard } from '@nestjs/passport';
-import { RolesGuard, Roles } from '../auth/roles.guard';
+import { RolesGuard, Roles } from '../auth/guards/roles.guard';
 
 @Controller('transaction')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
