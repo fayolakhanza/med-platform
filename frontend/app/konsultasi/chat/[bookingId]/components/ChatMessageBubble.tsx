@@ -71,13 +71,23 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
     );
   }
 
+  const senderRole = chat.sender?.role || (userRole === 'DOKTER' ? 'PASIEN' : 'DOKTER');
+
   // ===== Render: Chat Normal =====
   return (
     <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3 gap-2 items-end`}>
       {/* Avatar dokter / lawan bicara (ditampilkan di kiri) */}
       {!isMe && (
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shrink-0 shadow-md shadow-teal-500/30">
-          <Stethoscope className="w-4 h-4 text-white" />
+        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-md ${
+          senderRole === 'DOKTER'
+            ? "bg-gradient-to-br from-teal-500 to-emerald-600 shadow-teal-500/30 text-white"
+            : "bg-zinc-200 text-zinc-500 shadow-zinc-200/30"
+        }`}>
+          {senderRole === 'DOKTER' ? (
+            <Stethoscope className="w-4 h-4" />
+          ) : (
+            <User className="w-4 h-4" />
+          )}
         </div>
       )}
 
@@ -87,7 +97,9 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
           : "bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-bl-md shadow-md shadow-teal-500/20"
       }`}>
         {!isMe && (
-          <p className="text-[10px] font-semibold text-teal-100 mb-1 tracking-wide uppercase">Dokter</p>
+          <p className="text-[10px] font-semibold text-teal-100 mb-1 tracking-wide uppercase">
+            {senderRole}
+          </p>
         )}
         <p className="text-sm leading-relaxed">{chat.pesan}</p>
         <p className={`text-[10px] mt-1.5 text-right ${isMe ? "text-zinc-400" : "text-teal-100"}`}>
@@ -98,7 +110,11 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
       {/* Avatar pasien / pengirim (ditampilkan di kanan) */}
       {isMe && (
         <div className="w-8 h-8 rounded-xl bg-zinc-200 flex items-center justify-center shrink-0">
-          <User className="w-4 h-4 text-zinc-500" />
+          {userRole === 'DOKTER' ? (
+            <Stethoscope className="w-4 h-4 text-zinc-500" />
+          ) : (
+            <User className="w-4 h-4 text-zinc-500" />
+          )}
         </div>
       )}
     </div>

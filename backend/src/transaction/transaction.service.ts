@@ -47,6 +47,15 @@ export class TransactionService {
     async getChats(bookingId: number) {
         return this.prisma.chat.findMany({
             where: { bookingId: Number(bookingId) },
+            include: {
+                sender: {
+                    select: {
+                        id: true,
+                        nama: true,
+                        role: true,
+                    },
+                },
+            },
             orderBy: { createdAt: 'asc' },
         });
     }
