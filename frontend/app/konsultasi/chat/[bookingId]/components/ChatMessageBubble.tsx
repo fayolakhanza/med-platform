@@ -11,8 +11,8 @@ interface ChatMessageBubbleProps {
 }
 
 export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpenCheckout }: ChatMessageBubbleProps) {
-  const senderRole = chat.sender?.role || (Number(chat.senderId) === Number(currentUserId) ? userRole : (userRole === 'DOKTER' ? 'PASIEN' : 'DOKTER'));
-  const isPasien = senderRole === 'PASIEN';
+  const isMe = chat.sender?.role ? chat.sender.role === userRole : Number(chat.senderId) === Number(currentUserId);
+  const lawanBicaraLabel = userRole === 'DOKTER' ? 'PASIEN' : 'DOKTER';
 
   // ===== Render: Resep Digital =====
   if (chat.pesan.startsWith("[RESEP]: ")) {
@@ -74,34 +74,50 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
 
   // ===== Render: Chat Normal =====
   return (
-    <div className={`flex ${isPasien ? "justify-end" : "justify-start"} mb-3 gap-2 items-end`}>
-      {/* Avatar Dokter (ditampilkan di kiri) */}
-      {!isPasien && (
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shrink-0 shadow-md shadow-teal-500/30 text-white">
-          <Stethoscope className="w-4 h-4" />
+    <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-3 gap-2 items-end`}>
+      {/* Avatar lawan bicara (ditampilkan di kiri) */}
+      {!isMe && (
+        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-md ${
+          userRole === 'PASIEN'
+            ? "bg-gradient-to-br from-teal-500 to-emerald-600 shadow-teal-500/30 text-white"
+            : "bg-zinc-200 text-zinc-500 shadow-zinc-200/30"
+        }`}>
+          {userRole === 'PASIEN' ? (
+            <Stethoscope className="w-4 h-4" />
+          ) : (
+            <User className="w-4 h-4" />
+          )}
         </div>
       )}
 
       <div className={`max-w-[72%] rounded-2xl px-4 py-3 shadow-sm ${
-        isPasien
-          ? "bg-white border border-zinc-200 text-zinc-800 rounded-br-md"
-          : "bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-bl-md shadow-md shadow-teal-500/20"
+        isMe
+          ? "bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-br-md shadow-md shadow-teal-500/20"
+          : "bg-white border border-zinc-200 text-zinc-800 rounded-bl-md"
       }`}>
-        <p className={`text-[10px] font-semibold mb-1 tracking-wide uppercase ${
-          isPasien ? "text-zinc-400" : "text-teal-100"
-        }`}>
-          {senderRole}
-        </p>
+        {isMe ? (
+          <p className="text-[10px] font-semibold text-teal-100 mb-1 tracking-wide uppercase">
+            Anda
+          </p>
+        ) : (
+          <p className="text-[10px] font-semibold text-zinc-400 mb-1 tracking-wide uppercase">
+            {lawanBicaraLabel}
+          </p>
+        )}
         <p className="text-sm leading-relaxed">{chat.pesan}</p>
-        <p className={`text-[10px] mt-1.5 text-right ${isPasien ? "text-zinc-400" : "text-teal-100"}`}>
+        <p className={`text-[10px] mt-1.5 text-right ${isMe ? "text-teal-100" : "text-zinc-400"}`}>
           {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </p>
       </div>
 
-      {/* Avatar Pasien (ditampilkan di kanan) */}
-      {isPasien && (
+      {/* Avatar kita sendiri (ditampilkan di kanan) */}
+      {isMe && (
         <div className="w-8 h-8 rounded-xl bg-zinc-200 flex items-center justify-center shrink-0 text-zinc-500">
-          <User className="w-4 h-4" />
+          {userRole === 'DOKTER' ? (
+            <Stethoscope className="w-4 h-4" />
+          ) : (
+            <User className="w-4 h-4" />
+          )}
         </div>
       )}
     </div>
