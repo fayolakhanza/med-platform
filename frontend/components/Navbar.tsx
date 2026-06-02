@@ -28,9 +28,11 @@ export default function Navbar() {
 
           {/* Nav Links & Auth */}
           <div className="flex items-center gap-6">
-            <Link href="/" className="text-zinc-600 hover:text-teal-600 font-medium text-sm transition-colors">
-              Cari Dokter
-            </Link>
+            {(!user || user.role === "PASIEN") && (
+              <Link href="/" className="text-zinc-600 hover:text-teal-600 font-medium text-sm transition-colors">
+                Cari Dokter
+              </Link>
+            )}
             
             {user ? (
               <>
