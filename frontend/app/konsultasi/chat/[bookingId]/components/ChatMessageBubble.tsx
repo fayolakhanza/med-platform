@@ -11,13 +11,15 @@ interface ChatMessageBubbleProps {
 }
 
 export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpenCheckout }: ChatMessageBubbleProps) {
-  const isMe = chat.sender?.role ? chat.sender.role === userRole : Number(chat.senderId) === Number(currentUserId);
-  const lawanBicaraLabel = userRole === 'DOKTER' ? 'PASIEN' : 'DOKTER';
+  const messageText = chat.message || chat.pesan || "";
+  const senderRole = chat.senderRole || chat.sender?.role || (Number(chat.senderId) === Number(currentUserId) ? userRole : (userRole === 'DOKTER' ? 'PASIEN' : 'DOKTER'));
+  const isMe = senderRole === userRole;
+  const lawanBicaraLabel = senderRole;
 
   // ===== Render: Resep Digital =====
-  if (chat.pesan.startsWith("[RESEP]: ")) {
+  if (messageText.startsWith("[RESEP]: ")) {
     try {
-      const resepData = JSON.parse(chat.pesan.replace("[RESEP]: ", ""));
+      const resepData = JSON.parse(messageText.replace("[RESEP]: ", ""));
       const totalHarga = resepData.items.reduce((sum: number, item: any) => sum + (item.harga * item.jumlah), 0);
       
       return (
@@ -61,12 +63,12 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
   }
 
   // ===== Render: Notifikasi Sistem =====
-  if (chat.pesan.startsWith("[SISTEM]: ")) {
+  if (messageText.startsWith("[SISTEM]: ")) {
     return (
       <div className="w-full flex justify-center my-4">
         <span className="bg-teal-50 text-teal-700 text-xs py-1.5 px-4 rounded-full border border-teal-100 flex items-center gap-1.5 shadow-sm">
           <CheckCircle2 className="w-3.5 h-3.5" />
-          {chat.pesan.replace("[SISTEM]: ", "")}
+          {messageText.replace("[SISTEM]: ", "")}
         </span>
       </div>
     );
@@ -104,7 +106,7 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
             {lawanBicaraLabel}
           </p>
         )}
-        <p className="text-sm leading-relaxed">{chat.pesan}</p>
+        <p className="text-sm leading-relaxed">{messageText}</p>
         <p className={`text-[10px] mt-1.5 text-right ${isMe ? "text-teal-100" : "text-zinc-400"}`}>
           {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </p>
