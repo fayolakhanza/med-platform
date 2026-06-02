@@ -33,7 +33,11 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      if (typeof window !== 'undefined') {
+      // Jangan paksa redirect jika error berasal dari endpoint login/register
+      // Biarkan UI yang menangani pesan error-nya
+      const isAuthRoute = error.config?.url?.includes('/auth/login') || error.config?.url?.includes('/auth/register');
+      
+      if (!isAuthRoute && typeof window !== 'undefined') {
         localStorage.removeItem('med_token');
         localStorage.removeItem('med_user');
         window.location.href = '/auth/login';
