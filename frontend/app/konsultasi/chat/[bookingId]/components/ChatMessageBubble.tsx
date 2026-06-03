@@ -1,4 +1,5 @@
 "use client";
+// MedPlatform Chat Room Component - Ver 1.0.2
 
 import { Button } from "../../../../../components/ui/button";
 import { FileText, CheckCircle2, Stethoscope, User } from "lucide-react";
