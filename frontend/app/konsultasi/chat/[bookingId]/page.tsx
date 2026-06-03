@@ -100,8 +100,8 @@ export default function ChatPage({ params }: { params: Promise<{ bookingId: stri
       </div>
 
       {/* Main chat container — fills viewport height */}
-      <div className="relative z-10 flex flex-col flex-1 max-w-3xl w-full mx-auto px-4 py-6 h-screen">
-        <div className="flex flex-col flex-1 bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-teal-900/10 border border-white/60 overflow-hidden">
+      <div className="relative z-10 flex flex-col flex-1 max-w-3xl w-full mx-auto px-2 sm:px-4 py-2 sm:py-6 h-[100dvh]">
+        <div className="flex flex-col flex-1 bg-white/80 backdrop-blur-2xl rounded-2xl sm:rounded-3xl shadow-2xl shadow-teal-900/10 border border-white/60 overflow-hidden">
 
           {/* ===== HEADER ===== */}
           <div className="bg-gradient-to-r from-teal-600 to-emerald-600 px-6 py-4 flex items-center justify-between shrink-0">

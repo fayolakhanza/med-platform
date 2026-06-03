@@ -93,7 +93,7 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
         </div>
       )}
 
-      <div className={`max-w-[72%] rounded-2xl px-4 py-3 shadow-sm ${
+      <div className={`max-w-[85%] sm:max-w-[72%] rounded-2xl px-4 py-3 shadow-sm ${
         isMe
           ? "bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-br-md shadow-md shadow-teal-500/20"
           : "bg-white border border-zinc-200 text-zinc-800 rounded-bl-md"
