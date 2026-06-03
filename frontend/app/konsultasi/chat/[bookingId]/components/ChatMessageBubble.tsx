@@ -98,15 +98,6 @@ export default function ChatMessageBubble({ chat, currentUserId, userRole, onOpe
           ? "bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-br-md shadow-md shadow-teal-500/20"
           : "bg-white border border-zinc-200 text-zinc-800 rounded-bl-md"
       }`}>
-        {isMe ? (
-          <p className="text-[10px] font-semibold text-teal-100 mb-1 tracking-wide uppercase">
-            Anda
-          </p>
-        ) : (
-          <p className="text-[10px] font-semibold text-zinc-400 mb-1 tracking-wide uppercase">
-            {lawanBicaraLabel}
-          </p>
-        )}
         <p className="text-sm leading-relaxed">{messageText}</p>
         <p className={`text-[10px] mt-1.5 text-right ${isMe ? "text-teal-100" : "text-zinc-400"}`}>
           {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
